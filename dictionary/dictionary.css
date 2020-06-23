@@ -1,0 +1,14 @@
+.app-wrapper{
+    display: flex;
+    justify-content: space-around;
+}
+
+.word, .btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+
+
