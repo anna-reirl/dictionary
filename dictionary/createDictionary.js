@@ -1,10 +1,7 @@
-if (!localStorage.getItem("dictionary")) {
-    localStorage.setItem("dictionary", '["word", "word1", "word2"]');
-}
-
-if (!localStorage.getItem("dictionary","learningWords","difficultWords")) {
-    localStorage.setItem("dictionary", '["word", "word1", "word2"]');
-}
+const settings = {
+  delete: false,
+  difficultWords: false,
+};
 
 const containers = Array.from(document.querySelectorAll(".container"))
     .reduce((prev, el) => {
@@ -15,7 +12,15 @@ const containers = Array.from(document.querySelectorAll(".container"))
 const renderHtml = {
 
     dictionary: function (name) {
-        return "<div class='word' data-name='" + name + "'><span>" + name + "</span><button class='remove'>Удалить</button><button class='difficult'>Сложные</button></div>";
+        let htmlCode = "<div class='word' data-name='" + name + "'><span>" + name + "</span>";
+        if (settings.delete) {
+            htmlCode += "<button class='remove'>Удалить</button>";
+        }
+        if (settings.difficultWords) {
+            htmlCode += "<button class='difficult'>Сложные</button></div>";
+        }
+        htmlCode += "</div>";
+        return htmlCode;
     },
     restore: function (name) {
         return "<div class='word' data-name='" + name + "'><span>" + name + "</span><button class='restore'>Восстановить</button></div>";
@@ -30,9 +35,9 @@ const renderHtml = {
 };
 
 const words = {
-    dictionary: JSON.parse(localStorage.getItem("dictionary") || "[]"),
-    deleted: JSON.parse(localStorage.getItem("deleted") || "[]"),
-    difficult: JSON.parse(localStorage.getItem("difficult") || "[]")
+    dictionary: JSON.parse(localStorage.getItem("dictionary") || "[]").map(el => el.word),
+    deleted: JSON.parse(localStorage.getItem("deleted") || "[]").map(el => el.word),
+    difficult: JSON.parse(localStorage.getItem("difficult") || "[]").map(el => el.word)
 }
 
 function save(name) {
